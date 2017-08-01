@@ -1,0 +1,19 @@
+version: "2"
+services:
+    bashbot:
+        build:
+            context: bashbot/
+            dockerfile: dockerfiles/bashbot.Dockerfile
+        volumes:
+          - /home/ubuntu/builder/bashbot/database.db:/database.db
+        env_file: ./bashbot/tokens
+        restart: unless-stopped
+    builder:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        volumes:
+          - /home/ubuntu/builder:/builder
+          - /var/run/docker.sock:/var/run/docker.sock
+          - /root/.ssh:/root/.ssh
+        restart: unless-stopped
